@@ -2,7 +2,7 @@
 
 Loads the mp1input.txt
 
-Displays heading information to the screen:
+//Displays heading information to the screen:
 
 define the class of PuzzleState objects:
 the puzzle configuration (a numpy 2d array) 
