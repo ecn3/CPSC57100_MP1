@@ -1,0 +1,28 @@
+//Create mp1input.txt
+
+Loads the mp1input.txt
+
+Displays heading information to the screen:
+
+define the class of PuzzleState objects:
+the puzzle configuration (a numpy 2d array) 
+the g/h/f costs, predecessor state reference
+the action that was taken to get to this state from the predecessor
+
+Executes the A* algorithm with the Manhattan distance heuristic
+Goal state:
+0 1 2
+3 4 5
+6 7 8
+
+Shows the solution in form of the puzzle configurations after each move,
+Show move number
+action taken
+match sample output
+
+Displays the number of states that A* had to visit in order to get to the solution.
+
+* PriorityQueue from the queue package to implement the frontier (open) set.
+* implement the __lt__ method in your PuzzleState class.
+* Use Python’s built-in set object to implement the closed set.
+	implement the __hash__ method in your PuzzleState class to do this
