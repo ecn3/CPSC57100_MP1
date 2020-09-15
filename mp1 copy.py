@@ -57,7 +57,19 @@ class PuzzleState():
         print(self)
     
     def can_move(self, direction):
-        """ TODO """
+        zero_position = np.argwhere(self.puzzle == 0)[0]
+        # Test if 0 tile can move up
+        if zero_position[0] > 0:
+            print(zero_position, "up")
+        # Test if 0 tile can move down    
+        if zero_position[0] < 2:
+            print(zero_position, "down")
+        # Test if 0 tile can move up
+        if zero_position[1] > 0:
+            print(zero_position, "left")
+        # Test if 0 tile can move down    
+        if zero_position[1] < 2:
+            print(zero_position, "right")
         
     def gen_next_state(self, direction):
         """ TODO """
