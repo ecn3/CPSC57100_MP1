@@ -27,9 +27,8 @@ class PuzzleState():
     def __hash__(self):
         return tuple(self.puzzle.ravel()).__hash__() 
     
-    def _compute_heuristic_cost(self):
+    def _compute_heuristic_cost(self): # DONE
         # Current Locations
-        loc_of_0_current = np.argwhere(self.puzzle == 0)[0]
         loc_of_1_current = np.argwhere(self.puzzle == 1)[0]
         loc_of_2_current = np.argwhere(self.puzzle == 2)[0]
         loc_of_3_current = np.argwhere(self.puzzle == 3)[0]
@@ -40,7 +39,6 @@ class PuzzleState():
         loc_of_8_current = np.argwhere(self.puzzle == 8)[0]
 
         # Goal Locations
-        loc_of_0_goal = np.argwhere(PuzzleState.SOLVED_PUZZLE == 0)[0]
         loc_of_1_goal = np.argwhere(PuzzleState.SOLVED_PUZZLE == 1)[0]
         loc_of_2_goal = np.argwhere(PuzzleState.SOLVED_PUZZLE == 2)[0]
         loc_of_3_goal = np.argwhere(PuzzleState.SOLVED_PUZZLE == 3)[0]
@@ -51,7 +49,6 @@ class PuzzleState():
         loc_of_8_goal = np.argwhere(PuzzleState.SOLVED_PUZZLE == 8)[0]
 
         # Compute Manhattan distance
-        manhattan_distance_0 = abs(loc_of_0_current[0] - loc_of_0_goal[0]) + abs(loc_of_0_current[1] - loc_of_0_goal[1])
         manhattan_distance_1 = abs(loc_of_1_current[0] - loc_of_1_goal[0]) + abs(loc_of_1_current[1] - loc_of_1_goal[1])
         manhattan_distance_2 = abs(loc_of_2_current[0] - loc_of_2_goal[0]) + abs(loc_of_2_current[1] - loc_of_2_goal[1])
         manhattan_distance_3 = abs(loc_of_3_current[0] - loc_of_3_goal[0]) + abs(loc_of_3_current[1] - loc_of_3_goal[1])
@@ -61,9 +58,8 @@ class PuzzleState():
         manhattan_distance_7 = abs(loc_of_7_current[0] - loc_of_7_goal[0]) + abs(loc_of_7_current[1] - loc_of_7_goal[1])
         manhattan_distance_8 = abs(loc_of_8_current[0] - loc_of_8_goal[0]) + abs(loc_of_8_current[1] - loc_of_8_goal[1])
 
-        total_manhattan_distance = manhattan_distance_0+manhattan_distance_1+manhattan_distance_2+manhattan_distance_3+manhattan_distance_4+manhattan_distance_5+manhattan_distance_6+manhattan_distance_7+manhattan_distance_8
-
-        print("Manhattan Distance: ",total_manhattan_distance)
+        total_manhattan_distance = manhattan_distance_1+manhattan_distance_2+manhattan_distance_3+manhattan_distance_4+manhattan_distance_5+manhattan_distance_6+manhattan_distance_7+manhattan_distance_8
+        #print("Manhattan Distance: ",total_manhattan_distance)
         return total_manhattan_distance
 
     
@@ -92,29 +88,31 @@ class PuzzleState():
         PuzzleState.move = PuzzleState.move + 1
         print(self)
     
-    def can_move(self, direction):
+    def can_move(self, direction): # DONE
+        # Get zero location
         zero_position = np.argwhere(self.puzzle == 0)[0]
+
         # Test if 0 tile can move up
-        if zero_position[0] > 0:
-            print(zero_position, "up")
-            #return True
-        # Test if 0 tile can move down    
-        if zero_position[0] < 2:
-            print(zero_position, "down")
-            #return True
+        if direction == "up" and zero_position[0] > 0:
+            return True
+        # Test if 0 tile can move down   
+        if direction == "down" and zero_position[0] < 2:
+            return True
         # Test if 0 tile can move up
-        if zero_position[1] > 0:
-            print(zero_position, "left")
-            #return True
-        # Test if 0 tile can move down    
-        if zero_position[1] < 2:
-            print(zero_position, "right")
-            #return True
+        if direction == "left" and zero_position[1] > 0:
+            return True
+        # Test if 0 tile can move down       
+        if direction == "right" and zero_position[1] < 2:
+            return True
+
+
         
 
         
     def gen_next_state(self, direction):
         """ TODO """
+        print("get next \n",self.puzzle, direction)
+
 
             
 
@@ -125,6 +123,7 @@ print('NAME: Christian Nelson')
 print("")
 
 
+# load random start state onto frontier priority queue
 frontier = queue.PriorityQueue()
 a = np.loadtxt('mp1input.txt', dtype=np.int32)
 start_state = PuzzleState(a,0,None)
@@ -135,24 +134,27 @@ closed_set = set()
 
 num_states = 0
 while not frontier.empty():
-    next_state = frontier.get() 
+    #  choose state at front of priority queue
+    next_state = frontier.get()
     num_states = num_states + 1
 
+    #  if goal then quit and return path
     if next_state.is_goal():
         next_state.show_path()
         break
     
+    # Add state chosen for expansion to closed_set
     closed_set.add(next_state)
     
+    # Expand state (up to 4 moves possible)
     possible_moves = ['up','down','left','right']
     for move in possible_moves:
         if next_state.can_move(move):
             neighbor = next_state.gen_next_state(move)
             if neighbor in closed_set:
-                continue 
+                continue
             if neighbor not in frontier.queue:                           
                 frontier.put(neighbor)
+            # If it's already in the frontier, it's gauranteed to have lower cost, so no need to update
 
 print('\nNumber of states visited =',num_states)
-
-    
