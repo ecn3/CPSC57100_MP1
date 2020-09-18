@@ -1,1 +1,1 @@
-loc_of_7_current
+            print(self.puzzle)

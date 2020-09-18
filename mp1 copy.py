@@ -105,16 +105,46 @@ class PuzzleState():
         if direction == "right" and zero_position[1] < 2:
             return True
 
-
-        
-
-        
     def gen_next_state(self, direction):
-        """ TODO """
-        print("get next \n",self.puzzle, direction)
+        # Get zero location
+        zero_position = np.argwhere(self.puzzle == 0)[0]
+
+        # Create Next state
+        next_state = PuzzleState(self.puzzle, (self.gcost+1),self.pred)
+
+        # Make move
+        if direction == "up":
+            self.puzzle[zero_position[0],zero_position[1]] = self.puzzle[zero_position[0]-1,zero_position[1]]
+            self.puzzle[zero_position[0]-1,zero_position[1]] = 0
+
+        if direction == "down":
+            self.puzzle[zero_position[0],zero_position[1]] = self.puzzle[zero_position[0]+1,zero_position[1]]
+            self.puzzle[zero_position[0]+1,zero_position[1]] = 0
+
+        if direction == "right":
+            self.puzzle[zero_position[0],zero_position[1]] = self.puzzle[zero_position[0],zero_position[1]+1]
+            self.puzzle[zero_position[0],zero_position[1]+1] = 0
+
+        if direction == "left":
+            self.puzzle[zero_position[0],zero_position[1]] = self.puzzle[zero_position[0],zero_position[1]-1]
+            self.puzzle[zero_position[0],zero_position[1]-1] = 0
+        
+        # Make move
+        next_state.puzzle = self.puzzle
+
+        # update zeroloc
+        next_state.zeroloc = np.argwhere(next_state.puzzle == 0)[0]
+
+        # update hcost
+        next_state.hcost = next_state._compute_heuristic_cost()
+
+        # update fcost
+        next_state.fcost = next_state.gcost + next_state.hcost
+
+        # Update action from pred
+        next_state.action_from_pred = direction
 
 
-            
 
 print('Artificial Intelligence')
 print('MP1: A* for Sliding Puzzle')
