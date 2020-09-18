@@ -18,8 +18,8 @@ class PuzzleState():
     def __init__(self,conf,g,predState):
         self.puzzle = conf
         self.gcost = g
-        self._compute_heuristic_cost()
-        #self.fcost = self.gcost + self.hcost
+        self.hcost = self._compute_heuristic_cost()
+        self.fcost = self.gcost + self.hcost
         self.pred = predState
         self.zeroloc = np.argwhere(self.puzzle == 0)[0]
         self.action_from_pred = None
@@ -28,7 +28,43 @@ class PuzzleState():
         return tuple(self.puzzle.ravel()).__hash__() 
     
     def _compute_heuristic_cost(self):
-        """ Updates the heuristic function value for use in A* """
+        # Current Locations
+        loc_of_0_current = np.argwhere(self.puzzle == 0)[0]
+        loc_of_1_current = np.argwhere(self.puzzle == 1)[0]
+        loc_of_2_current = np.argwhere(self.puzzle == 2)[0]
+        loc_of_3_current = np.argwhere(self.puzzle == 3)[0]
+        loc_of_4_current = np.argwhere(self.puzzle == 4)[0]
+        loc_of_5_current = np.argwhere(self.puzzle == 5)[0]
+        loc_of_6_current = np.argwhere(self.puzzle == 6)[0]
+        loc_of_7_current = np.argwhere(self.puzzle == 7)[0]
+        loc_of_8_current = np.argwhere(self.puzzle == 8)[0]
+
+        # Goal Locations
+        loc_of_0_goal = np.argwhere(PuzzleState.SOLVED_PUZZLE == 0)[0]
+        loc_of_1_goal = np.argwhere(PuzzleState.SOLVED_PUZZLE == 1)[0]
+        loc_of_2_goal = np.argwhere(PuzzleState.SOLVED_PUZZLE == 2)[0]
+        loc_of_3_goal = np.argwhere(PuzzleState.SOLVED_PUZZLE == 3)[0]
+        loc_of_4_goal = np.argwhere(PuzzleState.SOLVED_PUZZLE == 4)[0]
+        loc_of_5_goal = np.argwhere(PuzzleState.SOLVED_PUZZLE == 5)[0]
+        loc_of_6_goal = np.argwhere(PuzzleState.SOLVED_PUZZLE == 6)[0]
+        loc_of_7_goal = np.argwhere(PuzzleState.SOLVED_PUZZLE == 7)[0]
+        loc_of_8_goal = np.argwhere(PuzzleState.SOLVED_PUZZLE == 8)[0]
+
+        # Compute Manhattan distance
+        manhattan_distance_0 = abs(loc_of_0_current[0] - loc_of_0_goal[0]) + abs(loc_of_0_current[1] - loc_of_0_goal[1])
+        manhattan_distance_1 = abs(loc_of_1_current[0] - loc_of_1_goal[0]) + abs(loc_of_1_current[1] - loc_of_1_goal[1])
+        manhattan_distance_2 = abs(loc_of_2_current[0] - loc_of_2_goal[0]) + abs(loc_of_2_current[1] - loc_of_2_goal[1])
+        manhattan_distance_3 = abs(loc_of_3_current[0] - loc_of_3_goal[0]) + abs(loc_of_3_current[1] - loc_of_3_goal[1])
+        manhattan_distance_4 = abs(loc_of_4_current[0] - loc_of_4_goal[0]) + abs(loc_of_4_current[1] - loc_of_4_goal[1])
+        manhattan_distance_5 = abs(loc_of_5_current[0] - loc_of_5_goal[0]) + abs(loc_of_5_current[1] - loc_of_5_goal[1])
+        manhattan_distance_6 = abs(loc_of_6_current[0] - loc_of_6_goal[0]) + abs(loc_of_6_current[1] - loc_of_6_goal[1])
+        manhattan_distance_7 = abs(loc_of_7_current[0] - loc_of_7_goal[0]) + abs(loc_of_7_current[1] - loc_of_7_goal[1])
+        manhattan_distance_8 = abs(loc_of_8_current[0] - loc_of_8_goal[0]) + abs(loc_of_8_current[1] - loc_of_8_goal[1])
+
+        total_manhattan_distance = manhattan_distance_0+manhattan_distance_1+manhattan_distance_2+manhattan_distance_3+manhattan_distance_4+manhattan_distance_5+manhattan_distance_6+manhattan_distance_7+manhattan_distance_8
+
+        print("Manhattan Distance: ",total_manhattan_distance)
+        return total_manhattan_distance
 
     
     def is_goal(self):
@@ -61,15 +97,21 @@ class PuzzleState():
         # Test if 0 tile can move up
         if zero_position[0] > 0:
             print(zero_position, "up")
+            #return True
         # Test if 0 tile can move down    
         if zero_position[0] < 2:
             print(zero_position, "down")
+            #return True
         # Test if 0 tile can move up
         if zero_position[1] > 0:
             print(zero_position, "left")
+            #return True
         # Test if 0 tile can move down    
         if zero_position[1] < 2:
             print(zero_position, "right")
+            #return True
+        
+
         
     def gen_next_state(self, direction):
         """ TODO """
