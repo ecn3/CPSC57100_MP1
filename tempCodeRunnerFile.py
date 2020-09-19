@@ -1,1 +1,1 @@
-            print(self.puzzle)
+current_puzzle
