@@ -144,6 +144,8 @@ class PuzzleState():
         # Update action from pred
         next_state.action_from_pred = direction
 
+        print(next_state)
+        return next_state
 
 
 print('Artificial Intelligence')
@@ -186,5 +188,6 @@ while not frontier.empty():
             if neighbor not in frontier.queue:                           
                 frontier.put(neighbor)
             # If it's already in the frontier, it's gauranteed to have lower cost, so no need to update
+    
 
 print('\nNumber of states visited =',num_states)

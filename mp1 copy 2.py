@@ -114,20 +114,23 @@ class PuzzleState():
 
         # Make move
         if direction == "up":
-            next_state.puzzle[zero_position[0],zero_position[1]] = next_state.puzzle[zero_position[0]-1,zero_position[1]]
-            next_state.puzzle[zero_position[0]-1,zero_position[1]] = 0
+            self.puzzle[zero_position[0],zero_position[1]] = self.puzzle[zero_position[0]-1,zero_position[1]]
+            self.puzzle[zero_position[0]-1,zero_position[1]] = 0
 
         if direction == "down":
-            next_state.puzzle[zero_position[0],zero_position[1]] = next_state.puzzle[zero_position[0]+1,zero_position[1]]
-            next_state.puzzle[zero_position[0]+1,zero_position[1]] = 0
+            self.puzzle[zero_position[0],zero_position[1]] = self.puzzle[zero_position[0]+1,zero_position[1]]
+            self.puzzle[zero_position[0]+1,zero_position[1]] = 0
 
         if direction == "right":
-            next_state.puzzle[zero_position[0],zero_position[1]] = next_state.puzzle[zero_position[0],zero_position[1]+1]
-            next_state.puzzle[zero_position[0],zero_position[1]+1] = 0
+            self.puzzle[zero_position[0],zero_position[1]] = self.puzzle[zero_position[0],zero_position[1]+1]
+            self.puzzle[zero_position[0],zero_position[1]+1] = 0
 
         if direction == "left":
-            next_state.puzzle[zero_position[0],zero_position[1]] = next_state.puzzle[zero_position[0],zero_position[1]-1]
-            next_state.puzzle[zero_position[0],zero_position[1]-1] = 0
+            self.puzzle[zero_position[0],zero_position[1]] = self.puzzle[zero_position[0],zero_position[1]-1]
+            self.puzzle[zero_position[0],zero_position[1]-1] = 0
+        
+        # Make move
+        next_state.puzzle = self.puzzle
 
         # update zeroloc
         next_state.zeroloc = np.argwhere(next_state.puzzle == 0)[0]
@@ -140,12 +143,8 @@ class PuzzleState():
 
         # Update action from pred
         next_state.action_from_pred = direction
-
-        if self.__lt__(next_state):
-            return self
-        else:
-            return next_state
-
+        
+        return next_state
 
 
 
@@ -184,7 +183,6 @@ while not frontier.empty():
     for move in possible_moves:
         if next_state.can_move(move):
             neighbor = next_state.gen_next_state(move)
-            print(neighbor.action_from_pred,neighbor.fcost)
             if neighbor in closed_set:
                 continue
             if neighbor not in frontier.queue:                           
