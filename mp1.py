@@ -110,7 +110,7 @@ class PuzzleState():
         zero_position = np.argwhere(self.puzzle == 0)[0]
         
         # Create Next state
-        next_state = PuzzleState(self.puzzle, (self.gcost+1),self.pred)
+        next_state = PuzzleState(self.puzzle, (self.gcost+1),self.puzzle)
 
         # Make move
         if direction == "up":
@@ -141,6 +141,7 @@ class PuzzleState():
         # Update action from pred
         next_state.action_from_pred = direction
 
+        # Return the move if it is better then the current else return current
         if self.__lt__(next_state):
             return self
         else:
@@ -184,7 +185,7 @@ while not frontier.empty():
     for move in possible_moves:
         if next_state.can_move(move):
             neighbor = next_state.gen_next_state(move)
-            print(neighbor.action_from_pred,neighbor.fcost)
+            print(neighbor.action_from_pred,neighbor.fcost) # Delete
             if neighbor in closed_set:
                 continue
             if neighbor not in frontier.queue:                           
